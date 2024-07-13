@@ -5,7 +5,7 @@
  *
  * @b: The size of the memory to be allocated.
  *
- * Return: NULL if the allocation fails,
+ * Return: Terminate with status 98 if the allocation fails,
  * or a pointer to the allocated memory.
  */
 void *malloc_checked(unsigned int b)
