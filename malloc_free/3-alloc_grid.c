@@ -32,12 +32,12 @@ int **alloc_grid(int width, int height)
 		*(ptp + i) = (int *)malloc(sizeof(int) * width);
 
 		if (*(ptp + i) == NULL)
-			{
-			    return (NULL);
-                			
+			{		
 			    for (j = 0; j <= i; j++)
 			        free(*(ptp + i));
 			    free (ptp);
+			
+			    return (NULL);
 			}
 			    
 	}
