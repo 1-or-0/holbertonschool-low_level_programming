@@ -1,87 +1,174 @@
-#include "main.h"
-#include <stdio.h>
 #include <stdlib.h>
+#include "main.h"
 
 /**
- * _puts - prints a string followed by a new newline
- * @str: str to print
+ * _calloc - allocate (`size' * `nmemb') bytes and set to 0
+ * @nmemb: number of elements
+ * @size: number of bytes per element
+ *
+ * Return: pointer to memory, or NULL if `nmemb' or `size' is 0 or malloc fails
  */
-
-void _puts(char *str)
+void *_calloc(unsigned int nmemb, unsigned int size)
 {
-	int a = 0;
+	unsigned int i;
+	char *p;
 
-	while (str[a])
+	if (size == 0 || nmemb == 0)
+		return (NULL);
+	p = malloc(nmemb * size);
+	if (p == NULL)
+		return (NULL);
+	for (i = 0; i < nmemb * size; ++i)
+		p[i] = 0;
+	return (p);
+}
+
+/**
+ * _strdigit - check if string `s' is composed only of digits
+ * @s: string to check
+ *
+ * Return: 1 if true, 0 if false
+ */
+int _strdigit(char *s)
+{
+	if (*s == '-' || *s == '+')
+		++s;
+	while (*s)
 	{
-		_putchar(str[a]);
-		a++;
+		if (*s < '0' || *s > '9')
+		{
+			return (0);
+		}
+		++s;
+	}
+	return (1);
+}
+
+/**
+ * _puts - print string `s'
+ * @s: string to print
+ */
+void _puts(char *s)
+{
+	while (*s)
+		_putchar(*(s++));
+}
+
+/**
+ * rev_num_str - reverse a number string up to trailing zeros
+ * @start: beginning of number
+ * @end: end of number
+ * @ns: string containing number
+ */
+void rev_num_str(int start, int end, char *ns)
+{
+	int i, j;
+	char tmp;
+
+	while (ns[end] == 0 && end != start)
+		--end;
+	for (i = start, j = end; i <= j; ++i, --j)
+	{
+		tmp = ns[i] + '0';
+		ns[i] = ns[j] + '0';
+		ns[j] = tmp;
 	}
 }
 
 /**
- * _atoi - converts a string to an int
- * @s: pointer to string
- * Return: converted int
+ * _strlen - calculate length of string `s'
+ * @s: string to get length of
+ *
+ * Return: length of string
  */
-
-int _atoi(const char *s)
+int _strlen(char *s)
 {
-	int sign = 1;
-	unsigned long int resp = 0, first, a;
+	int i;
 
-	for (first = 0; !(s[first] >= 48 && s[first] <= 57); first++)
-		if (s[first] == '-')
-			sign *= -1;
-
-	for (a = first; s[a] >= 48 && s[a] <= 57; a++)
-	{
-		resp *= 10;
-		resp += (s[a] - 48);
-	}
-
-	return (sign * resp);
-}
-
-/**
- * print_int - prints an integer
- * @n: int
- * Return: void
- */
-
-void print_int(unsigned long int n)
-{
-	unsigned long int divisor = 1;
-	unsigned long int a, resp;
-
-	for (a = 0; n / divisor > 9; a++, divisor *= 10)
+	for (i = 0; s[i]; ++i)
 		;
-
-	for (; divisor >= 1; n %= divisor, divisor /= 10)
-	{
-		resp = n / divisor;
-		_putchar('0' + resp);
-	}
+	return (i);
 }
 
 /**
- * main - returns the product of two positive numbers
- * @argc: number of arguments
- * @argv: arguments
- * Return: 0
+ * strmul - multply two numbers as strings
+ * @a: first number
+ * @b: second number
+ *
+ * Return: pointer to result on success, or NULL on failure
  */
-
-int main(int argc, char const *argv[])
+char *strmul(char *a, char *b)
 {
-	(void)argc;
+	int la, lb, i, j, k, l, neg = 0;
+	char *result;
+	char mul, mul_carry, sum, sum_carry;
 
-	if (argc != 3 || !_atoi(argv[1]) || !_atoi(argv[2]))
+	if (*a == '-')
+	{
+		neg ^= 1;
+		++a;
+	}
+	if (*b == '-')
+	{
+		neg ^= 1;
+		++b;
+	}
+	la = _strlen(a);
+	lb = _strlen(b);
+	result = _calloc(la + lb + 1 + neg, sizeof(char));
+	if (result == NULL)
+		return (NULL);
+	if (neg)
+		result[0] = '-';
+	for (i = lb - 1, l = neg; i >= 0; --i, ++l)
+	{
+		mul_carry = 0;
+		sum_carry = 0;
+		for (j = la - 1, k = l; j >= 0; --j, ++k)
+		{
+			mul = (a[j] - '0') * (b[i] - '0') + mul_carry;
+			mul_carry = mul / 10;
+			mul %= 10;
+			sum = result[k] + mul + sum_carry;
+			sum_carry = sum / 10;
+			sum %= 10;
+			result[k] = sum;
+		}
+		result[k] = sum_carry + mul_carry;
+	}
+	rev_num_str(neg, k, result);
+	return (result);
+}
+
+/**
+ * main - multiply two numbers from the command line and print the result
+ * @argc: argument count
+ * @argv: argument list
+ *
+ * Return: 0 if successful, 98 if failure
+ */
+int main(int argc, char *argv[])
+{
+	char *result;
+
+	if (argc != 3)
 	{
 		_puts("Error\n");
 		exit(98);
 	}
-
-	print_int(_atoi(argv[1]) * _atoi(argv[2]));
+	if (!_strdigit(argv[1]) || !_strdigit(argv[2]))
+	{
+		_puts("Error\n");
+		exit(98);
+	}
+	result = strmul(argv[1], argv[2]);
+	if (result == NULL)
+	{
+		_puts("Error\n");
+		exit(98);
+	}
+	_puts(result);
 	_putchar('\n');
-
-	return (0);
+	free(result);
+	exit(EXIT_SUCCESS);
 }
