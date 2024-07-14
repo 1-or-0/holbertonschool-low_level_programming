@@ -46,8 +46,8 @@ char *big_multiply(char *s1, char *s2)
 	r = malloc(a = x = l1 + l2);
 	if (!r)
 	{
-		free(r);
-		printf("Error\n"), exit(98);
+		printf("Error\n");
+		exit(98);
 	}
 	while (a--)
 		r[a] = 0;
@@ -57,7 +57,8 @@ char *big_multiply(char *s1, char *s2)
 		if (!_isdigit(s1[l1]))
 		{
 			free(r);
-			printf("Error\n"), exit(98);
+			printf("Error\n");
+			exit(98);
 		}
 		a = s1[l1] - '0';
 		c = 0;
@@ -67,7 +68,8 @@ char *big_multiply(char *s1, char *s2)
 			if (!_isdigit(s2[l2]))
 			{
 				free(r);
-				printf("Error\n"), exit(98);
+				printf("Error\n");
+				exit(98);
 			}
 			b = s2[l2] - '0';
 
@@ -82,6 +84,17 @@ char *big_multiply(char *s1, char *s2)
 	return (r);
 }
 
+/**
+ * _putchar - writes the character c to stdout
+ * @c: The character to print
+ *
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
+ */
+int _putchar(char c)
+{
+	return write(1, &c, 1);
+}
 
 /**
  * main - multiply two big number strings
@@ -96,7 +109,10 @@ int main(int argc, char **argv)
 	int a, c, x;
 
 	if (argc != 3)
-		printf("Error\n"), exit(98);
+	{
+		printf("Error\n");
+		exit(98);
+	}
 
 	x = _strlen(argv[1]) + _strlen(argv[2]);
 	r = big_multiply(argv[1], argv[2]);
@@ -116,3 +132,4 @@ int main(int argc, char **argv)
 	free(r);
 	return (0);
 }
+
