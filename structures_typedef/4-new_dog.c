@@ -1,6 +1,21 @@
 #include "dog.h"
 #include <stdlib.h>
-#include <string.h>
+/**
+ * _strcpy - Copies a string from source to destination.
+ * @str1: Pointer to the destination string.
+ * @str2: Pointer to the source string.
+ *
+ * Return: Pointer to str1.
+ */
+char *_strcpy(char *str1, char *str2)
+{
+	int i = 0;
+
+	while (str1[i])
+		str1[i] = str2[i];
+
+	return (str1);
+}
 /**
  * _strlen - Returns the length of a string.
  * @str: Pointer to a char (string).
@@ -48,7 +63,7 @@ dog_t *new_dog(char *name, float age, char *owner)
 		return (NULL);
 	}
 
-	strcpy(name_cpy, name);
+	_strcpy(name_cpy, name);
 
 	owner_cpy = malloc(_strlen(owner) + 1);
 
@@ -59,7 +74,7 @@ dog_t *new_dog(char *name, float age, char *owner)
 		return (NULL);
 	}
 
-	strcpy(owner_cpy, owner);
+	_strcpy(owner_cpy, owner);
 
 	new_dog->name = name_cpy;
 	new_dog->age = age;
