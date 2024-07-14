@@ -45,7 +45,10 @@ char *big_multiply(char *s1, char *s2)
 	l2 = _strlen(s2);
 	r = malloc(a = x = l1 + l2);
 	if (!r)
+	{
+		free(r);
 		printf("Error\n"), exit(98);
+	}
 	while (a--)
 		r[a] = 0;
 
