@@ -1,135 +1,87 @@
-#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include "main.h"
 #include <string.h>
 
 /**
- * _isdigit - checks if character is digit
- * @c: the character to check
- *
- * Return: 1 if digit, 0 otherwise
- */
-int _isdigit(int c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-/**
- * _strlen - returns the length of a string
- * @s: the string whose length to check
- *
- * Return: integer length of string
- */
-int _strlen(char *s)
+*isNumeric - Checks the string if it is numeric.
+*@str: String to be checked
+*
+*Return: 1 if the string is numeric,
+*	0 is the string is not numeric.
+*/
+int isNumeric(char *str)
 {
 	int i = 0;
 
-	while (*s++)
+	while (*(str + i))
+	{
+		if (*(str + i) < 48 || *(str + i) > 57)
+			return (0);
 		i++;
-	return (i);
+	}
+	return (1);
 }
 
 /**
- * big_multiply - multiply two big number strings
- * @s1: the first big number string
- * @s2: the second big number string
- *
- * Return: the product big number string
- */
-char *big_multiply(char *s1, char *s2)
+*multiply - Calculates the multiplication.
+*@num1: First number
+*@num2: Second number
+*
+*Return: void.
+*/
+int multiply(char *num1, char *num2)
 {
-	char *r;
-	int l1, l2, a, b, c, x;
+	int len1 = strlen(num1);
+	int len2 = strlen(num2);
+	int resultLen, i, j, mul, sum;
+	int *result;
 
-	l1 = _strlen(s1);
-	l2 = _strlen(s2);
-	r = malloc(a = x = l1 + l2);
-	if (!r)
+	resultLen = len1 + len2;
+
+	result = calloc(resultLen, sizeof(int));
+	if (result == NULL)
 	{
-		printf("Error\n");
-		exit(98);
+		printf("Memory allocation failed\n");
+		return (98);
 	}
-	while (a--)
-		r[a] = 0;
 
-	for (l1--; l1 >= 0; l1--)
-	{
-		if (!_isdigit(s1[l1]))
+	for (i = len1 - 1; i >= 0; i--)
+		for (j = len2 - 1; j >= 0; j--)
 		{
-			free(r);
-			printf("Error\n");
-			exit(98);
+			mul = (num1[i] - '0') * (num2[j] - '0');
+			sum = mul + result[i + j + 1];
+			result[i + j] += sum / 10;
+			result[i + j + 1] = sum % 10;
 		}
-		a = s1[l1] - '0';
-		c = 0;
+	i = 0;
+	while (i < resultLen - 1 && result[i] == 0)
+		i++;
+	for (; i < resultLen; i++)
+		printf("%d", result[i]);
+	printf("\n");
 
-		for (l2 = _strlen(s2) - 1; l2 >= 0; l2--)
-		{
-			if (!_isdigit(s2[l2]))
-			{
-				free(r);
-				printf("Error\n");
-				exit(98);
-			}
-			b = s2[l2] - '0';
-
-			c += r[l1 + l2 + 1] + (a * b);
-			r[l1 + l2 + 1] = c % 10;
-
-			c /= 10;
-		}
-		if (c)
-			r[l1 + l2 + 1] += c;
-	}
-	return (r);
-}
-
-/**
- * _putchar - writes the character c to stdout
- * @c: The character to print
- *
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
- */
-int _putchar(char c)
-{
-	return write(1, &c, 1);
-}
-
-/**
- * main - multiply two big number strings
- * @argc: the number of arguments
- * @argv: the argument vector
- *
- * Return: Always 0 on success.
- */
-int main(int argc, char **argv)
-{
-	char *r;
-	int a, c, x;
-
-	if (argc != 3)
-	{
-		printf("Error\n");
-		exit(98);
-	}
-
-	x = _strlen(argv[1]) + _strlen(argv[2]);
-	r = big_multiply(argv[1], argv[2]);
-	c = 0;
-	a = 0;
-	while (c < x)
-	{
-		if (r[c])
-			a = 1;
-		if (a)
-			_putchar(r[c] + '0');
-		c++;
-	}
-	if (!a)
-		_putchar('0');
-	_putchar('\n');
-	free(r);
+	free(result);
 	return (0);
 }
 
+/**
+*main - Checks two arguments if they are numbers and prints multiplication.
+*@argc: Number of arguments
+*@argv: Pointer to the array of arguments
+*
+*Return: 0,
+*	98 if fails.
+*/
+int main(int argc, char **argv)
+{
+	if (argc != 3 || !isNumeric(argv[1]) || !isNumeric(argv[2]))
+	{
+		printf("Error\n");
+		return (98);
+	}
+	multiply(argv[1], argv[2]);
+
+	return (0);
+}
