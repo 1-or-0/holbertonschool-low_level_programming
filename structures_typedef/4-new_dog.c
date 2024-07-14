@@ -7,19 +7,17 @@
  *
  * Return: Pointer to str1.
  */
-char *_strcpy(char *str1, char *str2)
-{
-	int i = 0;
+char *_strcpy(char *str1, const char *str2) {
+    int i = 0;
 
-	while (str1[i])
-	{
-		str1[i] = str2[i];
-		i++;
-	}
+    while (str2[i]) {
+        str1[i] = str2[i];
+        i++;
+    }
 
-	str1[i] = '\0';
+    str1[i] = '\0';
 
-	return (str1);
+    return str1;
 }
 /**
  * _strlen - Returns the length of a string.
