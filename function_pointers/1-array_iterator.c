@@ -6,9 +6,9 @@
  * @size: Size of the array.
  * @action: Pointer to the given function.
  */
-void array_iterator(int *array, unsigned int size, void (*action)(int))
+void array_iterator(int *array, size_t size, void (*action)(int))
 {
-	unsigned int i = 0;
+	size_t i = 0;
 
 	while (i < size)
 	{
