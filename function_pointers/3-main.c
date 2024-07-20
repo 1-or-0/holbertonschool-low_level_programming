@@ -20,7 +20,10 @@ return (98);
 
 fptr = get_op_func(argv[2]);
 
-printf("%d\n", (*fptr)(atoi(argv[1]), atoi(argv[3])));
+if (fptr == NULL)
+	return (99);
+
+	printf("%d\n", (*fptr)(atoi(argv[1]), atoi(argv[3])));
 
 return (0);
 }
