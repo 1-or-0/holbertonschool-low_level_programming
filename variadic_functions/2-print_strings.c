@@ -22,13 +22,13 @@ void print_strings(const char *separator, const unsigned int n, ...)
 	if (ptr == NULL)
 		ptr = "nil";
 
-		printf("%s", ptr);
+	printf("%s", ptr);
 
-		if (i + 1 >= (int)n)
-			break;
+	if (i + 1 >= (int)n)
+		break;
 
-		if (separator != NULL)
-			printf("%s", separator);
+	if (separator != NULL)
+		printf("%s", separator);
 	}
 
 	va_end(ap);
