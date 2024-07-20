@@ -15,7 +15,7 @@ return (98);
 if (argv[2][1] != 0)
 {	
 printf("Error\n");
-return (98);
+return (99);
 }
 
 fptr = get_op_func(argv[2]);
