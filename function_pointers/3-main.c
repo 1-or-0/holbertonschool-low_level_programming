@@ -21,8 +21,10 @@ return (98);
 fptr = get_op_func(argv[2]);
 
 if (fptr == NULL)
+{
+	printf("Error\n");
 	return (99);
-
+}
 printf("%d\n", (*fptr)(atoi(argv[1]), atoi(argv[3])));
 
 return (0);
