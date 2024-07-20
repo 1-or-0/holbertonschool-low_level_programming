@@ -9,7 +9,7 @@ int (*fptr)(int, int);
 if (argc != 4)
 {
 printf("ERROR\n");
-return (0);
+return (98);
 }
 
 if (argv[2][1] != 0)
