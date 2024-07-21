@@ -23,13 +23,13 @@ int main(int argc, char *argv[])
 		exit(2);
 	}
 
-	ptr  = (char*)main;
+	ptr  = (char *)main;
 
 	for (i = 0; i < atoi(argv[1]) - 1; i++)
 		printf("%02x ", (unsigned char)ptr[i]);
-	
+
 
 	printf("%02x\n", (unsigned char)ptr[i]);
 
-	return 0;
+	return (0);
 }
